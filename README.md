@@ -1,2 +1,36 @@
-# Lesson-2.2-Air-Quality-MQ135-MLA
-Ανίχνευση ποιότητας αέρα και CO2 με τον αισθητήρα MQ-135. Βασισμένο στο σύστημα περιβαλλοντικής παρακολούθησης του project MLA της Unique Tech.
+# 🌬️ Lesson 2.2: Air Quality & CO2 Monitoring
+![Project Status](https://img.shields.io/badge/Project-MLA--Ready-blue?style=for-the-badge)
+![Complexity](https://img.shields.io/badge/Complexity-Medium-yellow?style=for-the-badge)
+
+Καλωσορίσατε στο **Μάθημα 2.2**. Εδώ αναλύουμε πώς το Arduino μπορεί να ανιχνεύσει αέρια και ρύπους, χρησιμοποιώντας την τεχνολογία που αναπτύχθηκε για το αυτόνομο σύστημα **MLA**.
+
+## 🧬 Η Επιστήμη πίσω από το Μάθημα
+Ο αισθητήρας **MQ-135** χρησιμοποιεί ένα θερμαντικό στοιχείο και ένα στρώμα διοξειδίου του κασσιτέρου ($SnO_2$). Η αγωγιμότητά του αλλάζει ανάλογα με τη συγκέντρωση αερίων (CO2, Αμμωνία, Βενζόλιο) στον αέρα.
+
+## 🛠️ Hardware Setup
+* **Controller:** Arduino Uno / ESP32
+* **Sensor:** MQ-135 Gas Sensor
+* **Wiring:**
+    * VCC -> 5V
+    * GND -> GND
+    * A0  -> Analog Pin A0
+
+
+
+---
+
+## 🚀 Unique Tech Pro-Tips (Lessons from MLA)
+> [!IMPORTANT]
+> **The 24-Hour Rule:** Οι αισθητήρες της σειράς MQ απαιτούν "Burn-in period". Την πρώτη φορά που θα τον δουλέψετε, αφήστε τον αναμμένο για 24 ώρες για να σταθεροποιηθούν οι μετρήσεις.
+> 
+> **Smoothing Algorithm:** Στον κώδικα αυτού του repo, έχουμε προσθέσει έναν αλγόριθμο λήψης μέσου όρου (averaging) για να εξαλείψουμε τον ηλεκτρονικό θόρυβο.
+
+## 📁 Περιεχόμενα Repo
+- `Air_Quality_Monitor.ino`: Ο κύριος κώδικας με smoothing.
+- `Schematic.png`: Διάγραμμα συνδεσμολογίας.
+
+---
+### 🔗 Συνδεθείτε μαζί μας
+Επισκεφθείτε το [Blog μας](https://uniquetech-robotics.blogspot.com/) για το πλήρες άρθρο και το video του μαθήματος.
+
+#UniqueTech #ArduinoMasterclass #MLA #Robotics #AirQuality
