@@ -1,52 +1,55 @@
 /*
  * Unique Tech - Arduino Masterclass
- * Lesson 2.2: Air Quality Monitoring (MQ-135)
- * * Περιγραφή: Μέτρηση ποιότητας αέρα και κατηγοριοποίηση επιπέδων ρύπανσης.
- * Για περισσότερα: https://uniquetech-robotics.blogspot.com/
+ * Lesson 2.2b: True CO2 with Sensirion SCD40
+ * Χρήση βιβλιοθήκης Sensirion I2C SCD4x
  */
 
-// Ορισμός Pin
-const int MQ135_PIN = A0; 
+#include <Arduino.h>
+#include <SensirionI2cScd4x.h>
+#include <Wire.h>
 
-// Ρυθμίσεις Βαθμονόμησης (Calibration)
-const int CLEAN_AIR_THRESHOLD = 200;
-const int POLLUTION_THRESHOLD = 500;
+SensirionI2cScd4x scd4x;
 
 void setup() {
-  Serial.begin(9600);
-  
-  // Χρόνος προθέρμανσης αισθητήρα
-  Serial.println(F("--- Unique Tech Air Monitor v1.0 ---"));
-  Serial.println(F("Προθέρμανση αισθητήρα (Warm-up)..."));
-  delay(3000); 
+  Serial.begin(115200);
+  Wire.begin();
+
+  scd4x.begin(Wire);
+
+  // Σταμάτημα προηγούμενων μετρήσεων
+  scd4x.stopPeriodicMeasurement();
+
+  // Έναρξη μετρήσεων (κάθε 5 δευτερόλεπτα)
+  uint16_t error = scd4x.startPeriodicMeasurement();
+  if (error) {
+    Serial.print("Error starting measurement: ");
+    Serial.println(error);
+  }
+
+  Serial.println("SCD40 Initialized. Waiting for first reading...");
 }
 
 void loop() {
-  // Λήψη μέσου όρου από 10 μετρήσεις για σταθερότητα (Smoothing)
-  long sum = 0;
-  for(int i = 0; i < 10; i++) {
-    sum += analogRead(MQ135_PIN);
-    delay(10);
+  uint16_t co2;
+  float temperature;
+  float humidity;
+
+  // Διάβασμα δεδομένων
+  uint16_t error = scd4x.readMeasurement(co2, temperature, humidity);
+
+  if (error) {
+    Serial.print("Error reading measurement: ");
+  } else if (co2 == 0) {
+    Serial.println("Invalid sample detected.");
+  } else {
+    Serial.print("CO2: ");
+    Serial.print(co2);
+    Serial.print(" ppm | Temp: ");
+    Serial.print(temperature);
+    Serial.print(" °C | Humidity: ");
+    Serial.print(humidity);
+    Serial.println(" %");
   }
-  int averageValue = sum / 10;
 
-  // Εμφάνιση αποτελεσμάτων
-  Serial.print(F("Air Quality Index: "));
-  Serial.print(averageValue);
-  
-  displayAirStatus(averageValue);
-
-  delay(2000); // Μέτρηση κάθε 2 δευτερόλεπτα
-}
-
-void displayAirStatus(int value) {
-  if (value < CLEAN_AIR_THRESHOLD) {
-    Serial.println(F(" | Status: EXCELLENT ✨"));
-  } 
-  else if (value < POLLUTION_THRESHOLD) {
-    Serial.println(F(" | Status: MODERATE ⚠️"));
-  } 
-  else {
-    Serial.println(F(" | Status: HIGH POLLUTION 🚨"));
-  }
+  delay(5000); // Ο SCD40 ανανεώνει κάθε 5 δευτερόλεπτα
 }
