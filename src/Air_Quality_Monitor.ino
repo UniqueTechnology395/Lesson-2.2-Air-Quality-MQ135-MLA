@@ -1,8 +1,19 @@
-/*
- * Unique Tech - Arduino Masterclass
- * Lesson 2.2b: True CO2 with Sensirion SCD40
- * Χρήση βιβλιοθήκης Sensirion I2C SCD4x
+/* * ----------------------------------------------------------------------------
+ * Project: Unique Tech Air Quality Monitor (MQ135 Sensor)
+ * Author: Unique Tech Team
+ * License: MIT License
+ * * Copyright (c) 2026 Unique Tech
+ * * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * ----------------------------------------------------------------------------
  */
+
 
 #include <Arduino.h>
 #include <SensirionI2cScd4x.h>
